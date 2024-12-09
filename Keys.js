@@ -114,148 +114,116 @@ absolute.addEventListener("click", getAbsolute, false);
 let sign = document.getElementById("sign");
 sign.addEventListener("click", getSign, false);
 
+function insertChar(char) {
+  if (answerJustOccurred) {
+    script.clear();
+  }
+  input.textContent += char;
+  lastAction[0] = "add";
+  lastAction[1] = char;
+}
+
+function resetVariables() {
+  isStoring = false;
+  answerJustOccurred = false;
+  deActivateShiftAndAlpha();
+}
+
+function storeVariable(variable, char) {
+  if (
+    localStorage.getItem(`${variable}Value`) === null ||
+    isNaN(localStorage.getItem(`${variable}Value`))
+  ) {
+    localStorage.setItem(`${variable}Value`, "0");
+  }
+  localStorage.setItem(`${variable}Value`, calculate());
+  script.clear();
+  isStoring = false;
+  input.textContent = `${char} -> ` + localStorage.getItem(`${variable}Value`);
+  output.textContent = localStorage.getItem(`${variable}Value`);
+  return;
+}
+
 function getSign() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "sign(";
-    lastAction[0] = "add";
-    lastAction[1] = "sign(";
+    insertChar("sign(");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getAbsolute() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "abs(";
-    lastAction[0] = "add";
-    lastAction[1] = "abs(";
+    insertChar("abs(");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getCubed() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "³";
-    lastAction[0] = "add";
-    lastAction[1] = "³";
+    insertChar("³");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getMinMax() {
   if (!isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "max(";
-    lastAction[0] = "add";
-    lastAction[1] = "max(";
+    insertChar("max(");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "min(";
-    lastAction[0] = "add";
-    lastAction[1] = "min(";
+    insertChar("min(");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getLn() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "ln(";
-    lastAction[0] = "add";
-    lastAction[1] = "ln(";
+    insertChar("ln(");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "e^";
-    lastAction[0] = "add";
-    lastAction[1] = "e^";
+    insertChar("e^");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getLog() {
   if (!isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "log(";
-    lastAction[0] = "add";
-    lastAction[1] = "log(";
+    insertChar("log(");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getExponent() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "^";
-    lastAction[0] = "add";
-    lastAction[1] = "^";
+    insertChar("^");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getSquare() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "²";
-    lastAction[0] = "add";
-    lastAction[1] = "²";
+    insertChar("²");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getRoot() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "√(";
-    lastAction[0] = "add";
-    lastAction[1] = "√(";
+    insertChar("√(");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "∛(";
-    lastAction[0] = "add";
-    lastAction[1] = "∛(";
+    insertChar("∛(");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getFraction() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "/";
-    lastAction[0] = "add";
-    lastAction[1] = "/";
+    insertChar("/");
   }
-  answerJustOccurred = false;
-  isStoring = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function changeFormat() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("yValue") === null ||
-        isNaN(localStorage.getItem("yValue"))
-      ) {
-        localStorage.setItem("yValue", "0");
-      }
-      localStorage.setItem("yValue", calculate());
-      clear();
-      isStoring = false;
-      input.textContent = "y -> " + localStorage.getItem("yValue");
-      output.textContent = localStorage.getItem("yValue");
+      storeVariable("y", "y");
       return;
     }
 
@@ -272,47 +240,26 @@ function changeFormat() {
       }
     }
   } else if (isAlphaActive && !isShiftActive) {
-    input.textContent += "y";
+    insertChar("y");
   }
-  isStoring = false;
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getDMS() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("bValue") === null ||
-        isNaN(localStorage.getItem("bValue"))
-      ) {
-        localStorage.setItem("bValue", "0");
-      }
-      localStorage.setItem("bValue", calculate());
-      script.clear();
-      isStoring = false;
-      input.textContent = "B -> " + localStorage.getItem("bValue");
-      output.textContent = localStorage.getItem("bValue");
+      storeVariable("b", "B");
       return;
     }
-    input.textContent += "°";
-    lastAction[0] = "add";
-    lastAction[1] = "°";
-    answerJustOccurred = false;
+    insertChar("°");
   } else if (isShiftActive && !isAlphaActive) {
     if (answerJustOccurred) {
       output.innerHTML = primeFactorization(output.textContent);
     }
   } else if (isAlphaActive && !isShiftActive) {
-    input.textContent += "B";
-    lastAction[0] = "add";
-    lastAction[1] = "B";
-    answerJustOccurred = false;
+    insertChar("B");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function primeFactorization(n) {
@@ -335,51 +282,21 @@ function primeFactorization(n) {
 function getNegative() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("aValue") === null ||
-        isNaN(localStorage.getItem("aValue"))
-      ) {
-        localStorage.setItem("aValue", "0");
-      }
-      localStorage.setItem("aValue", calculate());
-      script.clear();
-      isStoring = false;
-      input.textContent = "A -> " + localStorage.getItem("aValue");
-      output.textContent = localStorage.getItem("aValue");
+      storeVariable("a", "A");
       return;
     }
-    if (answerJustOccurred) {
-      clear();
-    }
-    input.textContent += "(-)";
-    lastAction[0] = "add";
-    lastAction[1] = "(-)";
+    insertChar("(-)");
   }
   if (isAlphaActive && !isShiftActive) {
-    input.textContent += "A";
-    lastAction[0] = "add";
-    lastAction[1] = "A";
-    answerJustOccurred = false;
+    insertChar("A");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function memory() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("memoryValue") === null ||
-        isNaN(localStorage.getItem("memoryValue"))
-      ) {
-        localStorage.setItem("memoryValue", "0");
-      }
-      localStorage.setItem("memoryValue", calculate());
-      script.clear();
-      isStoring = false;
-      input.textContent = "M -> " + localStorage.getItem("memoryValue");
-      output.textContent = localStorage.getItem("memoryValue");
+      storeVariable("memory", "M");
       return;
     }
     if (
@@ -388,248 +305,116 @@ function memory() {
     ) {
       localStorage.setItem("memoryValue", "0");
     }
-
-    if (answerJustOccurred) {
-      clear();
-      input.textContent = "Ans";
-    }
-    input.textContent += "M+";
-    lastAction[0] = "add";
-    lastAction[1] = "M+";
-    answerJustOccurred = false;
+    insertChar("M+");
 
     deActivateShiftAndAlpha();
   } else if (isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      clear();
-      input.textContent = "Ans";
-    }
-    input.textContent += "M-";
-    lastAction[0] = "add";
-    lastAction[1] = "M-";
-    answerJustOccurred = false;
-    deActivateShiftAndAlpha();
+    insertChar("M-");
   } else if (isAlphaActive && !isShiftActive) {
-    if (answerJustOccurred) {
-      clear();
-    }
-    input.textContent += "M";
-    lastAction[0] = "add";
-    lastAction[1] = "M";
-    answerJustOccurred = false;
-    deActivateShiftAndAlpha();
+    insertChar("M");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function sinFunction() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("dValue") === null ||
-        isNaN(localStorage.getItem("dValue"))
-      ) {
-        localStorage.setItem("dValue", "0");
-      }
-      localStorage.setItem("dValue", calculate());
-      script.clear();
-      isStoring = false;
-      input.textContent = "D -> " + localStorage.getItem("dValue");
-      output.textContent = localStorage.getItem("dValue");
+      storeVariable("d", "D");
       return;
     }
-    input.textContent += "sin(";
-    lastAction[0] = "add";
-    lastAction[1] = "sin(";
+    insertChar("sin(");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "sin⁻¹(";
-    lastAction[0] = "add";
-    lastAction[1] = "sin⁻¹(";
+    insertChar("sin⁻¹(");
   } else if (isAlphaActive && !isShiftActive) {
-    input.textContent += "D";
-    lastAction[0] = "add";
-    lastAction[1] = "D";
+    insertChar("D");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function cosFunction() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("eValue") === null ||
-        isNaN(localStorage.getItem("eValue"))
-      ) {
-        localStorage.setItem("eValue", "0");
-      }
-      localStorage.setItem("eValue", calculate());
-      script.clear();
-      isStoring = false;
-      input.textContent = "E -> " + localStorage.getItem("eValue");
-      output.textContent = localStorage.getItem("eValue");
+      storeVariable("e", "E");
       return;
     }
-    input.textContent += "cos(";
-    lastAction[0] = "add";
-    lastAction[1] = "cos(";
+    insertChar("cos(");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "cos⁻¹(";
-    lastAction[0] = "add";
-    lastAction[1] = "cos⁻¹(";
+    insertChar("cos⁻¹(");
   } else if (isAlphaActive && !isShiftActive) {
-    input.textContent += "E";
-    lastAction[0] = "add";
-    lastAction[1] = "E";
+    insertChar("E");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function tanFunction() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("fValue") === null ||
-        isNaN(localStorage.getItem("fValue"))
-      ) {
-        localStorage.setItem("fValue", "0");
-      }
-      localStorage.setItem("fValue", calculate());
-      script.clear();
-      isStoring = false;
-      input.textContent = "F -> " + localStorage.getItem("fValue");
-      output.textContent = localStorage.getItem("fValue");
+      storeVariable("f", "F");
       return;
     }
-    input.textContent += "tan(";
-    lastAction[0] = "add";
-    lastAction[1] = "tan(";
+    insertChar("tan(");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "tan⁻¹(";
-    lastAction[0] = "add";
-    lastAction[1] = "tan⁻¹(";
+    insertChar("tan⁻¹(");
   } else if (isAlphaActive && !isShiftActive) {
-    input.textContent += "F";
-    lastAction[0] = "add";
-    lastAction[1] = "F";
+    insertChar("F");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getRec() {
   if (!script.isShiftActive && !script.isAlphaActive) {
-    script.input.textContent += "-";
-    lastAction[0] = "add";
-    lastAction[1] = "-";
+    insertChar("-");
   } else if (script.isShiftActive && !script.isAlphaActive) {
-    script.input.textContent += "Rec(";
-    lastAction[0] = "add";
-    lastAction[1] = "Rec(";
+    insertChar("Rec(");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getPol() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "+";
-    lastAction[0] = "add";
-    lastAction[1] = "+";
+    insertChar("+");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "Pol(";
-    lastAction[0] = "add";
-    lastAction[1] = "Pol(";
+    insertChar("Pol(");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getCombinations() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "÷";
-    lastAction[0] = "add";
-    lastAction[1] = "÷";
+    insertChar("÷");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "C";
-    lastAction[0] = "add";
-    lastAction[1] = "C";
+    insertChar("C");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function getPermutations() {
   if (!isShiftActive && !isAlphaActive) {
-    input.textContent += "x";
-    lastAction[0] = "add";
-    lastAction[1] = "x";
+    insertChar("x");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "P";
-    lastAction[0] = "add";
-    lastAction[1] = "P";
+    insertChar("P");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function roundNumber() {
   if (!isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "0";
-    lastAction[0] = "add";
-    lastAction[1] = "0";
+    insertChar("0");
   } else if (isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "Rnd(";
-    lastAction[0] = "add";
-    lastAction[1] = "Rnd(";
+    insertChar("Rnd(");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function randomNum() {
   if (!isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += ".";
-    lastAction[0] = "add";
-    lastAction[1] = ".";
+    insertChar(".");
   } else if (isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "Ran#";
-    lastAction[0] = "add";
-    lastAction[1] = "Ran#";
+    insertChar("Ran#");
   } else if (isAlphaActive && !isShiftActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "RanInt#(";
-    lastAction[0] = "add";
-    lastAction[1] = "RanInt#(";
+    insertChar("RanInt#(");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function showAnswer() {
@@ -642,49 +427,22 @@ function showAnswer() {
   }
 
   if (!isShiftActive) {
-    input.textContent += "Ans";
-    lastAction[0] = "add";
-    lastAction[1] = "Ans";
+    insertChar("Ans");
   } else {
-    if (answerJustOccurred) {
-      clear();
-      script.input.textContent += "Ans";
-    }
-    input.textContent += "%";
-    lastAction[0] = "add";
-    lastAction[1] = "%";
+    insertChar("%");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function showStandardForm() {
   if (!isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "x10^";
-    lastAction[0] = "add";
-    lastAction[1] = "x10^";
+    insertChar("x10^");
   } else if (isShiftActive && !isAlphaActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "π";
-    lastAction[0] = "add";
-    lastAction[1] = "π";
+    insertChar("π");
   } else if (isAlphaActive && !isShiftActive) {
-    if (answerJustOccurred) {
-      script.clear();
-    }
-    input.textContent += "e";
-    lastAction[0] = "add";
-    lastAction[1] = "e";
+    insertChar("e");
   }
-  isStoring = false;
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 export function factorial(x) {
@@ -696,33 +454,15 @@ export function factorial(x) {
 
 function factorialFunction() {
   if (!isShiftActive && !isAlphaActive) {
-    if (isStoring) {
-      if (
-        localStorage.getItem("cValue") === null ||
-        isNaN(localStorage.getItem("cValue"))
-      ) {
-        localStorage.setItem("cValue", "0");
-      }
-      localStorage.setItem("cValue", calculate());
-      script.clear();
-      isStoring = false;
-      input.textContent = "ℂ -> " + localStorage.getItem("cValue");
-      output.textContent = localStorage.getItem("cValue");
-      return;
-    }
-    input.textContent += "⁻¹";
-    lastAction[0] = "add";
-    lastAction[1] = "⁻¹";
-    answerJustOccurred = false;
+    storeVariable("c", "C");
+
+    insertChar("⁻¹");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += "!";
-    lastAction[0] = "add";
-    lastAction[1] = "!";
-    answerJustOccurred = false;
+    insertChar("!");
   } else if (isAlphaActive && !isShiftActive) {
-    input.textContent += "ℂ";
+    insertChar("ℂ");
   }
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 function standardForm(num) {
@@ -779,8 +519,7 @@ function showEngineeringNotation() {
       }
     }
   }
-
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
 
 export function storeData() {
@@ -833,32 +572,15 @@ export function appendToInput() {
 export function bracketFunction() {
   if (!isShiftActive && !isAlphaActive) {
     if (isStoring) {
-      if (
-        localStorage.getItem("xValue") === null ||
-        isNaN(localStorage.getItem("xValue"))
-      ) {
-        localStorage.setItem("xValue", "0");
-      }
-      localStorage.setItem("xValue", calculate());
-      clear();
-      isStoring = false;
-      input.textContent = "𝑥 -> " + localStorage.getItem("xValue");
-      output.textContent = localStorage.getItem("xValue");
+      storeVariable("x", "𝑥");
       return;
     }
-    input.textContent += ")";
-    lastAction[0] = "add";
-    lastAction[1] = ")";
+
+    insertChar(")");
   } else if (isShiftActive && !isAlphaActive) {
-    input.textContent += ",";
-    lastAction[0] = "add";
-    lastAction[1] = ",";
+    insertChar(",");
   } else if (isAlphaActive && !isShiftActive) {
-    input.textContent += "𝑥";
-    lastAction[0] = "add";
-    lastAction[1] = "𝑥";
-    answerJustOccurred = false;
+    insertChar("𝑥");
   }
-  answerJustOccurred = false;
-  deActivateShiftAndAlpha();
+  resetVariables();
 }
